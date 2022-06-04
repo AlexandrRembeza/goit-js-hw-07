@@ -13,6 +13,7 @@ function createGalleryElements(galleryItems) {
         return `<div class="gallery__item">
   <a class="gallery__link" href="${original}">
     <img
+      loading="lazy"
       class="gallery__image"
       src="${preview}"
       data-source="${original}"
@@ -32,7 +33,30 @@ function getLargeImage(event) {
     
     const largeImgAttribute = event.target.dataset.source;
 
-    console.log(largeImgAttribute)
-    const instance = basicLightbox.create(`<img src="${largeImgAttribute}">`)
-    instance.show()  
+    showLargeImg(largeImgAttribute);
+ 
 };
+
+function showLargeImg(largeImgUrl) {
+  const instance = basicLightbox.create(`<div class="modal">
+      <img src="${largeImgUrl}"></img> 
+  </div>`)
+  instance.show(); 
+
+ const visible = basicLightbox.visible();
+  if (visible) {
+    window.addEventListener("keydown", closeMoadalOnTargetEscape)
+  }
+
+  function closeMoadalOnTargetEscape(event) {
+  if (event.code === "Escape") {
+    instance.close(window.removeEventListener("keydown", closeMoadalOnTargetEscape));
+   }
+ };
+}
+
+
+
+
+
+
