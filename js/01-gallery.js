@@ -40,17 +40,15 @@ function getLargeImage(event) {
 function showLargeImg(largeImgUrl) {
   const instance = basicLightbox.create(`<div class="modal">
       <img src="${largeImgUrl}"></img> 
-  </div>`)
+  </div>`, {
+    onShow: (instance) => { window.addEventListener("keydown", closeMoadalOnTargetEscape) },
+    onClose: (instance) => {window.removeEventListener("keydown", closeMoadalOnTargetEscape) },
+  })
   instance.show(); 
-
- const visible = basicLightbox.visible();
-  if (visible) {
-    window.addEventListener("keydown", closeMoadalOnTargetEscape)
-  }
 
   function closeMoadalOnTargetEscape(event) {
   if (event.code === "Escape") {
-    instance.close(window.removeEventListener("keydown", closeMoadalOnTargetEscape));
+    instance.close();
    }
  };
 }
